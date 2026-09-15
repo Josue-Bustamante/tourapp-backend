@@ -1,16 +1,10 @@
 package com.example.tourapp.model;
 
-import org.springframework.context.annotation.Import;
-
-import javax.swing.*;
-
-import  jakarta.persistence.*;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 
 @Data
@@ -20,7 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "user_date")
 
-public class UserDate {
+public class UserData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
@@ -30,11 +24,9 @@ public class UserDate {
     private String nameUser;
 
     @Column(nullable = false, length = 255)
-    private String paswordUser;
+    private String passwordUser;
 
     @Column(nullable = false)
     private Boolean enabled;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private List<Booking> bookings;
 }

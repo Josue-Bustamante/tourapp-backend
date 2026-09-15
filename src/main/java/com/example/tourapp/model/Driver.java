@@ -11,29 +11,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-
-public class Client {
+public class Driver {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private Integer idClient;
+    private Integer idDriver;
 
-    @Column(nullable = false,length = 100)
+    @Column(nullable = false, length = 100)
     private String firstName;
 
-    @Column(nullable = false,length = 100)
+    @Column(nullable = false, length = 100)
     private String lastName;
 
-    @Column(nullable = false,length = 15)
+    @Column(nullable = false, length = 8)
     private String dni;
 
-    @Column(nullable = false,length = 150)
-    private String email;
+    @Column(nullable = false, length = 20)
+    private String numLicense;
 
-    @Column(length = 15)
-    private String phoneNumberClient;
+    @Column(nullable = false, length = 15)
+    private String phoneDriver;
 
-    @Column(length = 200)
-    private String address;
 
 }

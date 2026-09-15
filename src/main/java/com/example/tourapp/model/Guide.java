@@ -2,38 +2,35 @@ package com.example.tourapp.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Data
 @Entity
-
-public class Client {
+public class Guide {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private Integer idClient;
+    private Integer idGuide;
 
-    @Column(nullable = false,length = 100)
+    @Column(nullable = false, length = 100)
     private String firstName;
 
-    @Column(nullable = false,length = 100)
+    @Column(nullable = false, length = 100)
     private String lastName;
 
-    @Column(nullable = false,length = 15)
+    @Column(nullable = false, length = 8)
     private String dni;
 
-    @Column(nullable = false,length = 150)
-    private String email;
+    @Column(nullable = false, length = 15)
+    private String phoneGuide;
 
-    @Column(length = 15)
-    private String phoneNumberClient;
+    @Column(nullable = false, length = 20)
+    private String miceturCard;
 
-    @Column(length = 200)
-    private String address;
 
 }
