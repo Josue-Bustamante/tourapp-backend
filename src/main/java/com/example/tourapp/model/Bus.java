@@ -18,7 +18,7 @@ public class Bus {
     private Integer idBus;
 
     @Column(nullable = false, length = 8)
-    private char plate;
+    private String plate;
 
     @Column(nullable = false, length = 50)
     private String brand;
