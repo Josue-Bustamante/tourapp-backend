@@ -1,12 +1,17 @@
 package com.example.tourapp.controller;
 
+import com.example.tourapp.dto.BusDTO;
 import com.example.tourapp.model.Bus;
 import com.example.tourapp.service.IBusService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -16,34 +21,49 @@ public class BusController {
 
     private final IBusService service;
 
+    @Qualifier("defaultMapper")
+    private final ModelMapper modelMapper;
+
     @GetMapping
-    private ResponseEntity<List<Bus>> findAll() throws Exception {
-        List<Bus> list = service.findAll();
+    public ResponseEntity<List<BusDTO>> findAll() throws Exception {
+        List<BusDTO> list = service.findAll().stream().map(this::convertToDTO).toList();
         return ResponseEntity.ok(list);
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<Bus> findById(@PathVariable Integer id) throws Exception {
+    public ResponseEntity<BusDTO> findById(@PathVariable Integer id) throws Exception {
         Bus obj = service.findById(id);
-        return ResponseEntity.ok(obj);
+        return ResponseEntity.ok(convertToDTO(obj));
     }
 
     @PostMapping
-    private ResponseEntity<Bus> save(@RequestBody Bus bus) throws Exception {
-        Bus obj = service.save(bus);
-        return new ResponseEntity<>(obj, HttpStatus.CREATED); // 201
+    public ResponseEntity<Void> save(@Valid @RequestBody BusDTO dto) throws Exception {
+        Bus obj = service.save(convertToEntity(dto));
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(obj.getIdBus())
+                .toUri();
+        return ResponseEntity.created(location).build(); // 201
     }
 
     @PutMapping("/{id}")
-    private ResponseEntity<Bus> update(@PathVariable Integer id, @RequestBody Bus bus) throws Exception {
-        Bus obj = service.update(id, bus);
-        return ResponseEntity.ok(obj);
+    public ResponseEntity<BusDTO> update(@PathVariable Integer id, @Valid @RequestBody BusDTO dto) throws Exception {
+        Bus obj = convertToEntity(dto);
+        obj.setIdBus(id);
+        return ResponseEntity.ok(convertToDTO(service.update(id, obj))); // 200
     }
 
     @DeleteMapping("/{id}")
-    private ResponseEntity<Void> delete(@PathVariable Integer id) throws Exception {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) throws Exception {
         service.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().build(); // 204
+    }
+
+    private Bus convertToEntity(BusDTO dto) {
+        return modelMapper.map(dto, Bus.class);
+    }
+
+    private BusDTO convertToDTO(Bus obj) {
+        return modelMapper.map(obj, BusDTO.class);
     }
 }
 

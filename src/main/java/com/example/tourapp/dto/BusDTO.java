@@ -18,7 +18,7 @@ public class BusDTO {
     private Integer idBus;
 
     @NotNull
-    private Character plate;
+    private String plate;
 
     @NotNull
     @Size(min = 1, max = 50)
